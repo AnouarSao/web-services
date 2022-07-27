@@ -1,0 +1,103 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.poe.documentation.api;
+
+import com.poe.documentation.dao.DocumentationDAO;
+import com.poe.documentation.entity.Documentation;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+/**
+ *
+ * @author Anouar-Sao
+ */
+@Path("docs")
+public class DocumentaionAPI {
+
+    @POST()
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void create(Documentation docToCreate, @Context HttpServletRequest request) {
+
+        DocumentationDAO doc = (DocumentationDAO) request.getSession().getAttribute("doc");
+        if (doc == null) {
+            doc = new DocumentationDAO();
+        }
+        doc.createDoc(docToCreate);
+        request.getSession().setAttribute("doc", doc);
+    }
+
+    @GET()
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Documentation> findAll(@Context HttpServletRequest request) {
+
+        DocumentationDAO doc = (DocumentationDAO) request.getSession().getAttribute("doc");
+        if (doc == null) {
+            doc = new DocumentationDAO();
+            request.getSession().setAttribute("doc", doc);
+        }
+        return doc.findAllDocs();
+    }
+
+    @Path("/{id}")
+    @GET()
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response findById(@PathParam("id") Long docId, @Context HttpServletRequest request) {
+
+        DocumentationDAO doc = (DocumentationDAO) request.getSession().getAttribute("doc");
+        if (doc == null) {
+            doc = new DocumentationDAO();
+            request.getSession().setAttribute("doc", doc);
+        }
+        //return doc.findById(documenntationId);
+
+        Documentation d = doc.findDocById(docId);
+
+        if (d != null) {
+            return Response.ok(d).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Documentation Not Found").build();
+        }
+    }
+
+    @Path("/{id}")
+    @DELETE()
+    public void delete(@PathParam("id") Long docId, @Context HttpServletRequest request) {
+        DocumentationDAO doc = (DocumentationDAO) request.getSession().getAttribute("doc");
+        if (doc == null) {
+            doc = new DocumentationDAO();
+        }
+        doc.deleteDoc(docId);
+    }
+
+    @Path("/{id}")
+    @PUT()
+    public void update(@PathParam("id") Long docId, Documentation docData, @Context HttpServletRequest request) {
+        DocumentationDAO doc = (DocumentationDAO) request.getSession().getAttribute("doc");
+        if (doc == null) {
+            doc = new DocumentationDAO();
+        }
+        doc.updateDoc(docId, docData);
+    }
+
+//    private static Documentation map(@Context HttpServletRequest request){
+//        Documentation doc = (Documentation) request.getSession().getAttribute("doc");
+//        if (doc == null) {
+//            doc = new Documentation();
+//            request.getSession().setAttribute("doc", doc);
+//        }
+//        return doc;       
+//    }
+}

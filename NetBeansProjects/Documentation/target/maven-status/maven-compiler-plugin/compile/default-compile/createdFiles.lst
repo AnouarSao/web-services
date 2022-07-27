@@ -1,0 +1,7 @@
+com\poe\documentation\api\CategoryAPI.class
+com\poe\documentation\dao\CategoryDAO.class
+com\poe\documentation\jpa\EntityManagerSingleton.class
+com\poe\documentation\entity\Documentation.class
+com\poe\documentation\api\DocumentaionAPI.class
+com\poe\documentation\dao\DocumentationDAO.class
+com\poe\documentation\entity\Category.class

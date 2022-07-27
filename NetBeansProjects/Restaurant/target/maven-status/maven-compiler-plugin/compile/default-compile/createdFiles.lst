@@ -1,0 +1,3 @@
+com\mycompany\restaurant\api\MenuApi.class
+com\mycompany\restaurant\business\Menu.class
+com\mycompany\restaurant\business\Plat.class
